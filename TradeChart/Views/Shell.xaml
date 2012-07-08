@@ -1,20 +1,30 @@
-﻿<UserControl x:Class="TradeChart.MainPage"
+﻿<UserControl x:Class="TradeChart.Views.Shell"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:TradeChart="clr-namespace:TradeChart"
-             d:DesignHeight="800"
-             d:DesignWidth="1200"
+             xmlns:ViewModels="clr-namespace:TradeChart.ViewModels"
+             xmlns:Views="clr-namespace:TradeChart.Views"
              mc:Ignorable="d">
 
     <UserControl.Resources>
         <telerik:BooleanToVisibilityConverter x:Key="BoolToVis" />
+
+        <Style x:Key="DividingListBoxLineStyle" TargetType="Rectangle">
+            <Setter Property="Height" Value="2" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Fill" Value="Gray" />
+        </Style>
+
+        <Style x:Key="VerticalSliderStyle" TargetType="telerik:RadSlider">
+            <Setter Property="Orientation" Value="Vertical" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
     </UserControl.Resources>
-    <UserControl.DataContext>
-        <TradeChart:TradeChartViewModel />
-    </UserControl.DataContext>
 
     <Grid x:Name="LayoutRoot"
           Margin="50"
@@ -25,10 +35,25 @@
             <ColumnDefinition Width="50" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+
+            <!--  Title  -->
             <RowDefinition Height="100" />
-            <RowDefinition Height="300" />
-            <RowDefinition Height="300" />
+
+            <!--  Listbox  -->
             <RowDefinition Height="*" />
+
+            <!--  Warnings  -->
+            <RowDefinition Height="70" />
+
+            <!--  Chart and Sliders  -->
+            <RowDefinition Height="250" />
+
+            <!--  Save Button  -->
+            <RowDefinition Height="50" />
+
+            <!--  Gutter  -->
+            <RowDefinition Height="10" />
+
         </Grid.RowDefinitions>
 
         <StackPanel x:Name="HeadersStackPanel" Grid.Column="1">
@@ -47,110 +72,130 @@
         <StackPanel x:Name="ListBoxStackPanel"
                     Grid.Row="1"
                     Grid.Column="1">
-            <StackPanel x:Name="ListHeaders"
-                        Height="20"
-                        Margin="15,0,0,0"
-                        Orientation="Horizontal">
-                <TextBlock Width="80"
+
+            <Grid x:Name="ListHeadersGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
                            Margin="4,0,0,0"
                            Style="{StaticResource ListHeaderTextBlockStyle}"
                            Text="ID" />
-                <TextBlock Width="80"
+                <TextBlock Grid.Column="1"
                            Style="{StaticResource ListHeaderTextBlockStyle}"
                            Text="DAYS LEFT" />
-                <TextBlock Width="80"
+                <TextBlock Grid.Column="2"
                            Style="{StaticResource ListHeaderTextBlockStyle}"
                            Text="CIF" />
-                <TextBlock Width="90"
+                <TextBlock Grid.Column="3"
                            Style="{StaticResource ListHeaderTextBlockStyle}"
                            Text="TRADE DATE"
                            TextAlignment="Right" />
-                <TextBlock Width="100"
+                <TextBlock Grid.Column="4"
                            Style="{StaticResource ListHeaderTextBlockStyle}"
                            Text="SPOT DATE"
                            TextAlignment="Right" />
-                <TextBlock Width="100"
+                <TextBlock Grid.Column="5"
                            Style="{StaticResource ListHeaderTextBlockStyle}"
                            Text="BUYS"
                            TextAlignment="Right" />
-                <TextBlock Width="100"
+                <TextBlock Grid.Column="6"
                            Style="{StaticResource ListHeaderTextBlockStyle}"
                            Text="SELLS"
                            TextAlignment="Right" />
-                <TextBlock Width="80"
+                <TextBlock Grid.Column="7"
                            Style="{StaticResource ListHeaderTextBlockStyle}"
                            Text="SPOT"
                            TextAlignment="Right" />
-                <TextBlock Width="90"
+                <TextBlock Grid.Column="8"
                            Style="{StaticResource ListHeaderTextBlockStyle}"
                            Text="ADVISED"
-                           TextAlignment="Right" />
-            </StackPanel>
+                           TextAlignment="Center" />
+            </Grid>
 
-            <Line x:Name="DividingLine_Top"
-                  Margin="0,0,0,5"
-                  Stroke="#FFA3A3A3"
-                  StrokeThickness="1"
-                  X1="0"
-                  X2="850" />
-
+            <Rectangle x:Name="DividingLine_Top" Style="{StaticResource DividingListBoxLineStyle}" />
 
             <ListBox x:Name="TradeListBox"
-                     Width="825"
                      Height="200"
-                     Margin="15,0,0,0"
-                     HorizontalAlignment="Left"
                      BorderBrush="{x:Null}"
-                     ItemsSource="{Binding TradeData}"
+                     ItemsSource="{Binding Trades}"
                      SelectedItem="{Binding SelectedItem,
                                             Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Height="20" Orientation="Horizontal">
-                            <TextBlock Width="80"
+
+                        <Grid x:Name="ListItemGrid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
                                        Foreground="{StaticResource MetroBlueBrush}"
                                        Style="{StaticResource ListItemTextBlockStyle}"
                                        Text="{Binding Id,
                                                       Mode=OneWay}" />
-                            <TextBlock Width="80"
+                            <TextBlock Grid.Column="1"
                                        Style="{StaticResource ListItemTextBlockStyle}"
                                        Text="{Binding DaysLeft,
                                                       Mode=OneWay}" />
-                            <TextBlock Width="80"
+                            <TextBlock Grid.Column="2"
                                        Foreground="{StaticResource MetroBlueBrush}"
                                        Style="{StaticResource ListItemTextBlockStyle}"
                                        Text="{Binding CIF,
                                                       Mode=OneWay}" />
-                            <TextBlock Width="90"
+                            <TextBlock Grid.Column="3"
                                        Style="{StaticResource ListItemTextBlockStyle}"
                                        Text="{Binding TradeDate,
                                                       Mode=OneWay,
                                                       StringFormat=d}"
                                        TextAlignment="Right" />
-                            <TextBlock Width="100"
+                            <TextBlock Grid.Column="4"
                                        Style="{StaticResource ListItemTextBlockStyle}"
                                        Text="{Binding SpotDate,
                                                       Mode=OneWay,
                                                       StringFormat=d}"
                                        TextAlignment="Right" />
-                            <TextBlock Width="100"
+                            <TextBlock Grid.Column="5"
                                        Style="{StaticResource ListItemTextBlockStyle}"
                                        Text="{Binding Buys,
                                                       Mode=OneWay,
                                                       StringFormat=c}"
                                        TextAlignment="Right" />
-                            <TextBlock Width="100"
+                            <TextBlock Grid.Column="6"
                                        Style="{StaticResource ListItemTextBlockStyle}"
                                        Text="{Binding Sells,
                                                       Mode=OneWay,
                                                       StringFormat=c}"
                                        TextAlignment="Right" />
-                            <TextBlock Width="80"
+                            <TextBlock Grid.Column="7"
                                        Style="{StaticResource ListItemTextBlockStyle}"
                                        Text="{Binding Spot,
                                                       Mode=OneWay}"
                                        TextAlignment="Right" />
-                            <Viewbox Width="80"
+                            <Viewbox Grid.Column="8"
                                      HorizontalAlignment="Right"
                                      Visibility="{Binding IsAdvised,
                                                           Mode=OneTime,
@@ -162,36 +207,61 @@
                                       Fill="#ff8eb9ec"
                                       Stretch="Uniform" />
                             </Viewbox>
-                        </StackPanel>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Line x:Name="DividingLine_Bottom"
-                  Margin="0,15,0,0"
-                  d:IsHidden="True"
-                  Stroke="#FFA3A3A3"
-                  StrokeThickness="1"
-                  X1="0"
-                  X2="850" />
+
+            <Rectangle x:Name="DividingLine_Bottom" Style="{StaticResource DividingListBoxLineStyle}" />
+
         </StackPanel>
-        <StackPanel x:Name="ChartAndButtonStackPanel"
+
+        <StackPanel x:Name="WarningsStackPanel"
                     Grid.Row="2"
                     Grid.Column="1"
                     Orientation="Horizontal">
 
-            <TradeChart:ChartView x:Name="Chart"
-                                  Width="400"
-                                  VerticalAlignment="Center" />
+            <StackPanel>
+                <Image Margin="5" Source="/TradeChart;component/Images/Warning-blue.png" />
+                <Image Margin="5" Source="/TradeChart;component/Images/Warning-blue.png" />
+            </StackPanel>
 
-            <Button Width="150"
-                    Margin="260,75,0,170"
-                    Background="{StaticResource MetroBlueBrush}"
-                    Command="{Binding SaveTradeCommand}"
-                    Content="Save and Go Next"
-                    FontFamily="/TradeChart;component/Fonts/Fonts.zip#Segoe UI"
-                    FontSize="13.333"
-                    Foreground="White" />
-
+            <StackPanel>
+                <TextBlock Margin="5,10"
+                           Style="{StaticResource ListItemTextBlockStyle}"
+                           Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vestibulum risus ornare magna pharetra cursus. Nullam pellentesque tincidunt tristique." />
+                <TextBlock Margin="5"
+                           Style="{StaticResource ListItemTextBlockStyle}"
+                           Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vestibulum risus ornare magna pharetra cursus. Nullam pellentesque tincidunt tristique." />
+            </StackPanel>
         </StackPanel>
+        <Grid x:Name="ChartAndSlidersGrid"
+              Grid.Row="3"
+              Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Views:ChartView Grid.Column="0" DataContext="{Binding ChartItems}" />
+            <telerik:RadSlider Grid.Column="1" Style="{StaticResource VerticalSliderStyle}" />
+            <telerik:RadSlider Grid.Column="2" Style="{StaticResource VerticalSliderStyle}" />
+            <telerik:RadSlider Grid.Column="3" Style="{StaticResource VerticalSliderStyle}" />
+
+        </Grid>
+
+        <Button x:Name="SaveButton"
+                Grid.Row="4"
+                Grid.Column="1"
+                Width="150"
+                Margin="5"
+                HorizontalAlignment="Right"
+                Background="{StaticResource MetroBlueBrush}"
+                Command="{Binding SaveTradeCommand}"
+                Content="Save and Go Next"
+                FontFamily="/TradeChart;component/Fonts/Fonts.zip#Segoe UI"
+                FontSize="13.333"
+                Foreground="White" />
     </Grid>
 </UserControl>

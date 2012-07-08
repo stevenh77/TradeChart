@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Windows;
+using TradeChart.Views;
 
 namespace TradeChart
 {
-    public partial class App : Application
+    public partial class App
     {
 
         public App()
@@ -17,7 +18,7 @@ namespace TradeChart
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            this.RootVisual = new MainPage2();
+            this.RootVisual = new Shell();
         }
 
         private void Application_Exit(object sender, EventArgs e)

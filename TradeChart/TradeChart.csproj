@@ -122,34 +122,32 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ChartData.cs" />
-    <Compile Include="ChartView.xaml.cs">
+    <Compile Include="Models\ChartItem.cs" />
+    <Compile Include="Models\ChartItems.cs" />
+    <Compile Include="Models\Trades.cs" />
+    <Compile Include="Views\ChartView.xaml.cs">
       <DependentUpon>ChartView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage2.xaml.cs">
-      <DependentUpon>MainPage2.xaml</DependentUpon>
+    <Compile Include="Services\FactoryService.cs" />
+    <Compile Include="Services\IFactoryService.cs" />
+    <Compile Include="Views\Shell.xaml.cs">
+      <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TradeChartViewModel.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="ViewModels\ObservableBase.cs" />
+    <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Trade.cs" />
+    <Compile Include="Models\Trade.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="ChartView.xaml">
+    <Page Include="Views\ChartView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MainPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainPage2.xaml">
+    <Page Include="Views\Shell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
