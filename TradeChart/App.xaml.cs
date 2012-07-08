@@ -18,7 +18,7 @@ namespace TradeChart
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            this.RootVisual = new Shell();
+            this.RootVisual = new MainPage();
         }
 
         private void Application_Exit(object sender, EventArgs e)

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TradeChart.Views.Shell"
+﻿<UserControl x:Class="TradeChart.Views.MainPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -54,19 +54,28 @@
 
         </Grid.RowDefinitions>
 
-        <StackPanel x:Name="HeadersStackPanel" Grid.Column="1">
-            <TextBlock x:Name="Header"
-                       Grid.Column="1"
-                       FontFamily="/TradeChart;component/Fonts/Fonts.zip#Segoe UI Light"
-                       FontSize="28"
-                       Foreground="{StaticResource MetroBlueBrush}"
-                       Text="Advised Trades" />
-            <TextBlock Margin="0,10,0,0"
-                       FontSize="13.333"
-                       Style="{StaticResource ListItemTextBlockStyle}"
-                       Text="Select an advised trade, verify warnings and set acknowledgements" />
-        </StackPanel>
+        <Grid x:Name="HeadersGrid" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
+            <StackPanel x:Name="HeadersStackPanel">
+                <TextBlock x:Name="Header"
+                           FontFamily="/TradeChart;component/Fonts/Fonts.zip#Segoe UI Light"
+                           FontSize="28"
+                           Foreground="{StaticResource MetroBlueBrush}"
+                           Text="Advised Trades" />
+                <TextBlock Margin="0,10,0,0"
+                           FontSize="13.333"
+                           Style="{StaticResource ListItemTextBlockStyle}"
+                           Text="Select an advised trade, verify warnings and set acknowledgements" />
+            </StackPanel>
+
+            <Views:ChartView Grid.Column="1"
+                             Height="100"
+                             DataContext="{Binding ChartItems}" />
+        </Grid>
         <StackPanel x:Name="ListBoxStackPanel"
                     Grid.Row="1"
                     Grid.Column="1">
@@ -78,13 +87,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" MaxWidth="100" />
                     <ColumnDefinition Width="1*" MaxWidth="60" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" MaxWidth="100" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"
@@ -98,30 +101,6 @@
                 <TextBlock Grid.Column="2"
                            Style="{StaticResource ListHeaderTextBlockStyle}"
                            Text="CIF"
-                           TextAlignment="Center" />
-                <TextBlock Grid.Column="3"
-                           Style="{StaticResource ListHeaderTextBlockStyle}"
-                           Text="TRADE DATE"
-                           TextAlignment="Center" />
-                <TextBlock Grid.Column="4"
-                           Style="{StaticResource ListHeaderTextBlockStyle}"
-                           Text="SPOT DATE"
-                           TextAlignment="Center" />
-                <TextBlock Grid.Column="5"
-                           Style="{StaticResource ListHeaderTextBlockStyle}"
-                           Text="BUYS"
-                           TextAlignment="Center" />
-                <TextBlock Grid.Column="6"
-                           Style="{StaticResource ListHeaderTextBlockStyle}"
-                           Text="SELLS"
-                           TextAlignment="Center" />
-                <TextBlock Grid.Column="7"
-                           Style="{StaticResource ListHeaderTextBlockStyle}"
-                           Text="SPOT"
-                           TextAlignment="Center" />
-                <TextBlock Grid.Column="8"
-                           Style="{StaticResource ListHeaderTextBlockStyle}"
-                           Text="ADVISED"
                            TextAlignment="Center" />
             </Grid>
 
@@ -253,9 +232,6 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Views:ChartView Grid.Column="0"
-                             Margin="20"
-                             DataContext="{Binding ChartItems}" />
             <telerik:RadSlider Grid.Column="1" Style="{StaticResource VerticalSliderStyle}" />
             <telerik:RadSlider Grid.Column="2" Style="{StaticResource VerticalSliderStyle}" />
             <telerik:RadSlider Grid.Column="3" Style="{StaticResource VerticalSliderStyle}" />
