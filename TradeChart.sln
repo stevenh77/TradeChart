@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeChart", "TradeChart\TradeChart.csproj", "{FE51B5A0-5133-4F74-A50E-399E68B7F9BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeChart.Web", "TradeChart.Web\TradeChart.Web.csproj", "{485046EE-8369-47AF-8FF9-032C0CC23F7D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{485046EE-8369-47AF-8FF9-032C0CC23F7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{485046EE-8369-47AF-8FF9-032C0CC23F7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{485046EE-8369-47AF-8FF9-032C0CC23F7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{485046EE-8369-47AF-8FF9-032C0CC23F7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE51B5A0-5133-4F74-A50E-399E68B7F9BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE51B5A0-5133-4F74-A50E-399E68B7F9BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE51B5A0-5133-4F74-A50E-399E68B7F9BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE51B5A0-5133-4F74-A50E-399E68B7F9BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

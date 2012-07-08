@@ -1,0 +1,1655 @@
+﻿<Application x:Class="TradeChart.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:telerikChartView="clr-namespace:Telerik.Windows.Controls.ChartView;assembly=Telerik.Windows.Controls.Chart"
+             xmlns:telerikPrimitives="clr-namespace:Telerik.Windows.Controls.Primitives;assembly=Telerik.Windows.Controls">
+    <Application.Resources>
+
+        <telerik:MetroColors x:Key="MetroColors" />
+        <SolidColorBrush x:Key="BasicBrush" telerik:MetroColors.Color="Basic" />
+        <SolidColorBrush x:Key="MainBrush" telerik:MetroColors.Color="Main" />
+        <SolidColorBrush x:Key="MarkerBrush" telerik:MetroColors.Color="Marker" />
+        <telerik:MetroTheme x:Key="Theme" />
+        <SolidColorBrush x:Key="ListDisplayBrush" Color="#FF5C5C5C" />
+        <SolidColorBrush x:Key="MetroBlueBrush" Color="#FF0093DB" />
+
+
+        <ControlTemplate x:Key="RangeControlControlTemplate" TargetType="telerik:RadRangeControl">
+            <Border x:Name="LayoutRoot"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                <Grid>
+                    <!--  HorizontalTemplate  -->
+                    <Grid x:Name="HorizontalTemplate" Background="{StaticResource RangeControlBackground_Normal}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  [Horizontal] [Content placeholder]  -->
+                        <ContentPresenter x:Name="HorizontalContentPresenter" Grid.Column="1" />
+
+                        <!--  [Horizontal] [RangeSelectionTemplate]  -->
+                        <Grid x:Name="HorizontalRangeTemplate"
+                              Grid.Column="1"
+                              Margin="0 3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Rectangle x:Name="HorizontalRangeLargeDecrease"
+                                       Grid.Column="0"
+                                       Fill="Transparent" />
+                            <Thumb x:Name="HorizontalRangeStartThumb"
+                                   Grid.Column="1"
+                                   VerticalAlignment="Stretch"
+                                   IsEnabled="{TemplateBinding IsEnabled}"
+                                   Style="{StaticResource HoriozontalDecreaseThumbStyle}"
+                                   Visibility="{TemplateBinding ThumbVisibility}" />
+                            <Thumb x:Name="HorizontalRangeMiddleThumb"
+                                   Grid.Column="2"
+                                   VerticalAlignment="Stretch"
+                                   IsEnabled="{TemplateBinding IsEnabled}"
+                                   Style="{StaticResource HorizontalMiddleThumbStyle}" />
+                            <Thumb x:Name="HorizontalRangeEndThumb"
+                                   Grid.Column="3"
+                                   VerticalAlignment="Stretch"
+                                   IsEnabled="{TemplateBinding IsEnabled}"
+                                   Style="{StaticResource HoriozontalIncreaseThumbStyle}"
+                                   Visibility="{TemplateBinding ThumbVisibility}" />
+                            <Rectangle x:Name="HorizontalRangeLargeIncrease"
+                                       Grid.Column="4"
+                                       Fill="Transparent" />
+                        </Grid>
+
+                        <!--  Horizontal Decrease Button  -->
+                        <RepeatButton x:Name="HorizontalDecreaseHandle"
+                                      Grid.Column="0"
+                                      Delay="{TemplateBinding Delay}"
+                                      Interval="{TemplateBinding RepeatInterval}"
+                                      IsEnabled="{TemplateBinding IsEnabled}"
+                                      Style="{StaticResource HorizontalDecreaseRepeatButtonStyle}"
+                                      Visibility="{TemplateBinding HandlesVisibility}" />
+
+                        <!--  Horizontal Increase Button  -->
+                        <RepeatButton x:Name="HorizontalIncreaseHandle"
+                                      Grid.Column="2"
+                                      Delay="{TemplateBinding Delay}"
+                                      Interval="{TemplateBinding RepeatInterval}"
+                                      IsEnabled="{TemplateBinding IsEnabled}"
+                                      Style="{StaticResource HorizontalIncreaseRepeatButtonStyle}"
+                                      Visibility="{TemplateBinding HandlesVisibility}" />
+                    </Grid>
+                    <!--  VerticalTemplate  -->
+                    <Grid x:Name="VerticalTemplate" Background="{StaticResource RangeControlBackgroundVertical_Normal}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!--  [Vertical] [Content placeholder]  -->
+                        <ContentPresenter x:Name="VerticalContentPresenter" Grid.Row="1" />
+
+                        <!--  [Vertical] [RangeSelectionTemplate]  -->
+                        <Grid x:Name="VerticalRangeTemplate"
+                              Grid.Row="1"
+                              Margin="3 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Rectangle x:Name="VerticalRangeLargeIncrease"
+                                       Grid.Row="0"
+                                       Fill="Transparent" />
+                            <Thumb x:Name="VerticalRangeEndThumb"
+                                   Grid.Row="1"
+                                   HorizontalAlignment="Stretch"
+                                   IsEnabled="{TemplateBinding IsEnabled}"
+                                   Style="{StaticResource VerticalIncreaseThumbStyle}"
+                                   Visibility="{TemplateBinding ThumbVisibility}" />
+                            <Thumb x:Name="VerticalRangeMiddleThumb"
+                                   Grid.Row="2"
+                                   HorizontalAlignment="Stretch"
+                                   IsEnabled="{TemplateBinding IsEnabled}"
+                                   Style="{StaticResource VerticalMiddleThumbStyle}" />
+                            <Thumb x:Name="VerticalRangeStartThumb"
+                                   Grid.Row="3"
+                                   HorizontalAlignment="Stretch"
+                                   IsEnabled="{TemplateBinding IsEnabled}"
+                                   Style="{StaticResource VerticalDecreaseThumbStyle}"
+                                   Visibility="{TemplateBinding ThumbVisibility}" />
+                            <Rectangle x:Name="VerticalRangeLargeDecrease"
+                                       Grid.Row="4"
+                                       Fill="Transparent" />
+                        </Grid>
+
+                        <!--  [Vertical] [DecreaseHandle]  -->
+                        <RepeatButton x:Name="VerticalIncreaseHandle"
+                                      Grid.Row="0"
+                                      HorizontalAlignment="Stretch"
+                                      Delay="{TemplateBinding Delay}"
+                                      Interval="{TemplateBinding RepeatInterval}"
+                                      IsEnabled="{TemplateBinding IsEnabled}"
+                                      Style="{StaticResource VerticalIncreaseRepeatButtonStyle}"
+                                      Visibility="{TemplateBinding HandlesVisibility}" />
+
+                        <!--  [Vertical] [IncreaseHandle]  -->
+                        <RepeatButton x:Name="VerticalDecreaseHandle"
+                                      Grid.Row="2"
+                                      HorizontalAlignment="Stretch"
+                                      Delay="{TemplateBinding Delay}"
+                                      Interval="{TemplateBinding RepeatInterval}"
+                                      IsEnabled="{TemplateBinding IsEnabled}"
+                                      Style="{StaticResource VerticalDecreaseRepeatButtonStyle}"
+                                      Visibility="{TemplateBinding HandlesVisibility}" />
+
+                    </Grid>
+                </Grid>
+            </Border>
+        </ControlTemplate>
+
+        <!--  RadSlider  -->
+        <Style x:Key="RadRangeControlStyle" TargetType="telerik:RadRangeControl">
+            <Setter Property="Minimum" Value="0.0" />
+            <Setter Property="Maximum" Value="100.0" />
+            <Setter Property="SmallChange" Value="1.0" />
+            <Setter Property="LargeChange" Value="5.0" />
+            <Setter Property="MinimumRangeSpan" Value="0.5" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="IsEnabled" Value="True" />
+            <Setter Property="IsMouseWheelEnabled" Value="True" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Setter Property="Delay" Value="250" />
+            <Setter Property="RepeatInterval" Value="250" />
+            <Setter Property="StepAction" Value="MoveRange" />
+            <Setter Property="ThumbVisibility" Value="Visible" />
+            <Setter Property="TickPlacement" Value="None" />
+            <Setter Property="Template" Value="{StaticResource RangeControlControlTemplate}" />
+
+        </Style>
+
+        <Style BasedOn="{StaticResource RadRangeControlStyle}" TargetType="telerik:RadRangeControl" />
+
+
+        <!--  System.Windows.Button  -->
+
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{StaticResource BasicBrush}" />
+            <Setter Property="Background" Value="{StaticResource MainBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource MarkerBrush}" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="3" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Duration="0:0:0"
+                                                                           Storyboard.TargetName="Border"
+                                                                           Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource BasicBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="CommonStatesWrapper" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteDoubleKeyFrame KeyTime="00:00:00.050" Value="0" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0:0:0"
+                                                                           Storyboard.TargetName="Border"
+                                                                           Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource BasicBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimation Duration="0:0:0"
+                                                             Storyboard.TargetName="Content"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                             To="-1" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0"
+                                                             Storyboard.TargetName="Border"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.5" />
+                                            <DoubleAnimation Duration="0"
+                                                             Storyboard.TargetName="Content"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.3" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStatesGroup">
+                                    <VisualState x:Name="Unfocused">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FocusVisual" Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="00:00:00.150">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Visibility>Collapsed</Visibility>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="FocusVisual" Storyboard.TargetProperty="Opacity">
+                                                <LinearDoubleKeyFrame KeyTime="00:00:00.150" Value="0" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Focused">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FocusVisual" Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Visibility>Visible</Visibility>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="FocusVisual" Storyboard.TargetProperty="Opacity">
+                                                <LinearDoubleKeyFrame KeyTime="00:00:00.115" Value="0.2" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <Border x:Name="Border"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}" />
+
+
+                            <ContentPresenter x:Name="Content"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}">
+                                <ContentPresenter.RenderTransform>
+                                    <TranslateTransform />
+                                </ContentPresenter.RenderTransform>
+                            </ContentPresenter>
+
+                            <!--  Focus  -->
+                            <Border x:Name="CommonStatesWrapper">
+                                <Border x:Name="FocusVisual"
+                                        BorderBrush="{StaticResource MarkerBrush}"
+                                        BorderThickness="1"
+                                        Opacity="0"
+                                        Visibility="Collapsed" />
+                            </Border>
+                        </Grid>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style BasedOn="{StaticResource ButtonStyle}" TargetType="Button" />
+
+
+        <!--  style for ListBox  -->
+        <Style x:Key="ListBoxStyle" TargetType="ListBox">
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="{StaticResource BasicBrush}" />
+            <Setter Property="Background" Value="{StaticResource MainBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource MarkerBrush}" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="VerticalContentAlignment" Value="Top" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="BorderThickness" Value="0" />
+
+
+            <Setter Property="TabNavigation" Value="Once" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <ScrollViewer x:Name="ScrollViewer"
+                                      Margin="0"
+                                      Background="{TemplateBinding Background}"
+                                      BorderThickness="0"
+                                      Padding="{TemplateBinding Padding}"
+                                      telerik:StyleManager.Theme="{StaticResource Theme}">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style BasedOn="{StaticResource ListBoxStyle}" TargetType="ListBox" />
+
+        <!--  style for ListBoxItem  -->
+        <Style x:Key="ListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="3" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Top" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="{StaticResource MarkerBrush}" />
+
+            <Setter Property="TabNavigation" Value="Local" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Grid>
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Duration="0:0:0"
+                                                                           Storyboard.TargetName="Border"
+                                                                           Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource BasicBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="SelectedState"
+                                                                           Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Visibility>Collapsed</Visibility>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimation Duration="0"
+                                                             Storyboard.TargetName="contentPresenter"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.3" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Unselected" />
+                                    <VisualState x:Name="Selected">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0"
+                                                             Storyboard.TargetName="SelectedState"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="1" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Focused">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0"
+                                                             Storyboard.TargetName="FocusVisual"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.2" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Unfocused" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <!--  normal  -->
+                            <Border x:Name="Border"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}" />
+
+                            <!--  Selected  -->
+                            <Border x:Name="SelectedState"
+                                    Background="{StaticResource BasicBrush}"
+                                    Opacity="0" />
+
+                            <ContentControl x:Name="contentPresenter"
+                                            Margin="{TemplateBinding Padding}"
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            Content="{TemplateBinding Content}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            Foreground="{TemplateBinding Foreground}" />
+
+                            <!--  Focus  -->
+                            <Border x:Name="FocusVisual"
+                                    Margin="1"
+                                    BorderBrush="{StaticResource MarkerBrush}"
+                                    BorderThickness="1"
+                                    Opacity="0" />
+
+                        </Grid>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style BasedOn="{StaticResource ListBoxItemStyle}" TargetType="ListBoxItem" />
+        <Style x:Key="ListHeaderTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="/TradeChart;component/Fonts/Fonts.zip#Segoe UI" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="11" />
+        </Style>
+
+        <Style x:Key="ListItemTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="/TradeChart;component/Fonts/Fonts.zip#Segoe UI" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{StaticResource ListDisplayBrush}" />
+        </Style>
+
+
+        <SolidColorBrush x:Key="ChartBackground" Color="#00FFFFFF" />
+        <SolidColorBrush x:Key="AxisLabelForeground" Color="#FF333333" />
+        <SolidColorBrush x:Key="AxisStrokeBrush"
+                         Opacity="0.6"
+                         Color="#FF333333" />
+        <DataTemplate x:Key="TrackBallDataTemplate">
+            <Ellipse Width="8"
+                     Height="8"
+                     Fill="#FFFFFFFF"
+                     Stroke="#FF828282"
+                     StrokeThickness="1" />
+        </DataTemplate>
+        <Color x:Key="AccentColor">#FF5AA4D4</Color>
+        <SolidColorBrush x:Key="StrokeBrush" Color="#000000" />
+        <sys:Double x:Key="AreaStrokeThickness">0</sys:Double>
+        <Thickness x:Key="BarSeriesStrokeThickness">0</Thickness>
+        <sys:Double x:Key="FinancialSeriesStrokeThickness">1</sys:Double>
+        <SolidColorBrush x:Key="FinancialSeriesUpStroke" Color="#FFB2B2B2" />
+        <SolidColorBrush x:Key="FinancialSeriesDownStroke" Color="#FF7A7A7A" />
+        <SolidColorBrush x:Key="FinancialSeriesUpFill" Color="#FFD2D2D2" />
+        <SolidColorBrush x:Key="FinancialSeriesDownFill" Color="#FF494949" />
+        <SolidColorBrush x:Key="GridLineBrush"
+                         Opacity="0.5"
+                         Color="#FFD7D7D7" />
+        <Style x:Key="RadChartBaseStyle" TargetType="telerikChartView:RadChartBase">
+            <Setter Property="MinWidth" Value="100" />
+            <Setter Property="MinHeight" Value="100" />
+            <Setter Property="Background" Value="{StaticResource ChartBackground}" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:RadChartBase">
+                        <Border x:Name="layoutRoot"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid>
+                                <ContentPresenter x:Name="emptyContent"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Content="{TemplateBinding EmptyContent}"
+                                                  ContentTemplate="{TemplateBinding EmptyContentTemplate}"
+                                                  IsHitTestVisible="False"
+                                                  Visibility="Collapsed" />
+                                <Canvas x:Name="renderSurface"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch">
+                                    <Border x:Name="plotAreaDecoration" Style="{TemplateBinding PlotAreaStyle}" />
+                                </Canvas>
+                                <Canvas x:Name="labelLayer"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch" />
+                                <Canvas x:Name="adornerLayer"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Background="Transparent" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TrackBallLineStyle">
+                <Setter.Value>
+                    <Style TargetType="Polyline">
+                        <Setter Property="Stroke" Value="#FF828282" />
+                        <Setter Property="StrokeThickness" Value="2" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="DragZoomBorderStyle">
+                <Setter.Value>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush" Value="#FF828282" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Background" Value="#40FFFFFF" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource RadChartBaseStyle}" TargetType="telerikChartView:RadChartBase" />
+        <Style x:Key="ChartElementPresenterStyle" TargetType="telerikChartView:ChartElementPresenter">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:ChartElementPresenter">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource ChartElementPresenterStyle}" TargetType="telerikChartView:ChartElementPresenter" />
+        <SolidColorBrush x:Key="SliderElement" Color="#FFC2C2C2" />
+        <SolidColorBrush x:Key="SliderElement_MouseOver" Color="#FFA3A3A3" />
+        <SolidColorBrush x:Key="SliderElement_Pressed" Color="#FF858585" />
+        <ControlTemplate x:Key="HandleRepeatButton" TargetType="RepeatButton">
+            <Grid x:Name="Root">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="MouseOver">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Path" Storyboard.TargetProperty="Fill">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SliderElement_MouseOver}" />
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Path" Storyboard.TargetProperty="Fill">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SliderElement_Pressed}" />
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <Border x:Name="Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}" />
+                <Path x:Name="Path"
+                      Width="4"
+                      Height="7"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M3,0 L4,0 L4,1 L4,2 L4,3 L4,4 L4,5 L4,6 L4,7 L3,7 L3,6 L2,6 L2,5 L1,5 L1,4 L0,4 L0,3 L1,3 L1,2 L2,2 L2,1 L3,1 z"
+                      Fill="{TemplateBinding Foreground}"
+                      RenderTransformOrigin="0.5,0.5"
+                      Stretch="Fill" />
+            </Grid>
+        </ControlTemplate>
+        <Style x:Key="DecreaseHandleStyle" TargetType="RepeatButton">
+            <Setter Property="Foreground" Value="{StaticResource SliderElement}" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Width" Value="10" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="IsTabStop" Value="True" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Template" Value="{StaticResource HandleRepeatButton}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style x:Key="IncreaseHandleStyle"
+               BasedOn="{StaticResource DecreaseHandleStyle}"
+               TargetType="RepeatButton">
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX=" -1" ScaleY=" 1" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ThumbStyle" TargetType="Thumb">
+            <Setter Property="Width" Value="8" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="IsTabStop" Value="True" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="#FFC2C2C2" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Grid>
+                            <Border x:Name="Border"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SelectionMiddleThumbStyle" TargetType="Thumb">
+            <Setter Property="IsTabStop" Value="True" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Background" Value="#FFC2C2C2" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Grid>
+                            <Border x:Name="Border"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TrackStyle" TargetType="ContentControl">
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="LargeHandleStyle" TargetType="RepeatButton">
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Grid Background="Transparent" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PanZoomBarStyle" TargetType="telerikChartView:PanZoomBar">
+            <Setter Property="HandlesVisibility" Value="Visible" />
+            <Setter Property="IsMouseWheelEnabled" Value="False" />
+            <Setter Property="IsSelectionRangeEnabled" Value="True" />
+            <Setter Property="StepAction" Value="MoveRange" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="ThumbStyle" Value="{StaticResource ThumbStyle}" />
+            <Setter Property="SelectionMiddleThumbStyle" Value="{StaticResource SelectionMiddleThumbStyle}" />
+            <Setter Property="TrackStyle" Value="{StaticResource TrackStyle}" />
+            <Setter Property="IncreaseHandleStyle" Value="{StaticResource IncreaseHandleStyle}" />
+            <Setter Property="DecreaseHandleStyle" Value="{StaticResource DecreaseHandleStyle}" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="SmallChange" Value="0.01" />
+            <Setter Property="LargeChange" Value="0.1" />
+            <Setter Property="Minimum" Value="0" />
+            <Setter Property="Maximum" Value="1" />
+            <Setter Property="MinimumRangeSpan" Value="0.01" />
+            <Setter Property="Padding" Value="0,3" />
+            <Setter Property="Height" Value="15" />
+            <Setter Property="Width" Value="15" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:PanZoomBar">
+                        <telerikPrimitives:LayoutTransformControl x:Name="layoutControl" RenderTransformOrigin=".5 0">
+                            <telerikPrimitives:LayoutTransformControl.LayoutTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </telerikPrimitives:LayoutTransformControl.LayoutTransform>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="OrientationStates">
+                                    <VisualState x:Name="Horizontal">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="layoutControl" Storyboard.TargetProperty="LayoutTransform">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <RotateTransform Angle="0" />
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Vertical">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="layoutControl" Storyboard.TargetProperty="LayoutTransform">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <RotateTransform Angle="-90" />
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RangeStartThumb" Storyboard.TargetProperty="(FrameworkElement.Cursor)">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Cursor>SizeNS</Cursor>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RangeEndThumb" Storyboard.TargetProperty="(FrameworkElement.Cursor)">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Cursor>SizeNS</Cursor>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}" />
+                                <Grid UseLayoutRounding="True">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <ContentControl x:Name="Track"
+                                                    Grid.Column="1"
+                                                    Grid.ColumnSpan="3"
+                                                    Style="{TemplateBinding TrackStyle}" />
+                                    <RepeatButton x:Name="DecreaseButton"
+                                                  Delay="{TemplateBinding Delay}"
+                                                  Interval="{TemplateBinding RepeatInterval}"
+                                                  Style="{TemplateBinding DecreaseHandleStyle}"
+                                                  Visibility="{TemplateBinding HandlesVisibility}" />
+                                    <RepeatButton x:Name="LargeDecreaseButton"
+                                                  Grid.Column="1"
+                                                  Delay="{TemplateBinding Delay}"
+                                                  Interval="{TemplateBinding RepeatInterval}"
+                                                  Style="{StaticResource LargeHandleStyle}" />
+                                    <Grid Grid.Column="2" Margin="{TemplateBinding Padding}">
+                                        <Thumb x:Name="SingleThumbHost"
+                                               Style="{TemplateBinding ThumbStyle}"
+                                               Visibility="Collapsed" />
+                                        <StackPanel x:Name="RangeThumbsPanel" Orientation="Horizontal">
+                                            <Thumb x:Name="RangeStartThumb"
+                                                   Cursor="SizeWE"
+                                                   Style="{TemplateBinding ThumbStyle}"
+                                                   Visibility="{TemplateBinding ThumbVisibility}" />
+                                            <Thumb x:Name="RangeMiddleThumb" Style="{TemplateBinding SelectionMiddleThumbStyle}" />
+                                            <Thumb x:Name="RangeEndThumb"
+                                                   Cursor="SizeWE"
+                                                   Style="{TemplateBinding ThumbStyle}"
+                                                   Visibility="{TemplateBinding ThumbVisibility}" />
+                                        </StackPanel>
+                                    </Grid>
+                                    <RepeatButton x:Name="LargeIncreaseButton"
+                                                  Grid.Column="3"
+                                                  Delay="{TemplateBinding Delay}"
+                                                  Interval="{TemplateBinding RepeatInterval}"
+                                                  Style="{StaticResource LargeHandleStyle}" />
+                                    <RepeatButton x:Name="IncreaseButton"
+                                                  Grid.Row="1"
+                                                  Grid.Column="4"
+                                                  Delay="{TemplateBinding Delay}"
+                                                  Interval="{TemplateBinding RepeatInterval}"
+                                                  RenderTransformOrigin="0.5,0.5"
+                                                  Style="{TemplateBinding IncreaseHandleStyle}"
+                                                  Visibility="{TemplateBinding HandlesVisibility}" />
+                                </Grid>
+                            </Grid>
+                        </telerikPrimitives:LayoutTransformControl>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource PanZoomBarStyle}" TargetType="telerikChartView:PanZoomBar" />
+        <Style TargetType="telerikChartView:TrackBallInfoControl">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="#FF000000" />
+            <Setter Property="Background" Value="#FFFAFAFA" />
+            <Setter Property="BorderBrush" Value="#FF828282" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:TrackBallInfoControl">
+                        <Grid>
+                            <Rectangle Margin="0,2"
+                                       Fill="{TemplateBinding Background}"
+                                       RadiusX="4"
+                                       RadiusY="4"
+                                       Stroke="{TemplateBinding BorderBrush}" />
+                            <Path Width="4"
+                                  Height="7"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Bottom"
+                                  Data="M0,1 C0,3 2,5 4,5 C4,5 4,8 4,8 C2,8 0,6 0,4 C0,4 0,2 0,1 z"
+                                  Fill="{TemplateBinding BorderBrush}"
+                                  Stretch="Fill" />
+                            <Path Width="4"
+                                  Height="7"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Bottom"
+                                  Data="M0,1 C0,3 2,5 4,5 C4,5 4,8 4,8 C2,8 0,6 0,4 C0,4 0,2 0,1 z"
+                                  Fill="{TemplateBinding BorderBrush}"
+                                  RenderTransformOrigin="0.5,0.5"
+                                  Stretch="Fill">
+                                <Path.RenderTransform>
+                                    <ScaleTransform ScaleX="-1" />
+                                </Path.RenderTransform>
+                            </Path>
+                            <Path Width="4"
+                                  Height="7"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Top"
+                                  Data="M0,1 C0,3 2,5 4,5 C4,5 4,8 4,8 C2,8 0,6 0,4 C0,4 0,2 0,1 z"
+                                  Fill="{TemplateBinding BorderBrush}"
+                                  RenderTransformOrigin="0.5,0.5"
+                                  Stretch="Fill">
+                                <Path.RenderTransform>
+                                    <ScaleTransform ScaleY="-1" />
+                                </Path.RenderTransform>
+                            </Path>
+                            <Path Width="4"
+                                  Height="7"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Top"
+                                  Data="M0,1 C0,3 2,5 4,5 C4,5 4,8 4,8 C2,8 0,6 0,4 C0,4 0,2 0,1 z"
+                                  Fill="{TemplateBinding BorderBrush}"
+                                  RenderTransformOrigin="0.5,0.5"
+                                  Stretch="Fill">
+                                <Path.RenderTransform>
+                                    <ScaleTransform ScaleX="-1" ScaleY="-1" />
+                                </Path.RenderTransform>
+                            </Path>
+                            <Rectangle Height="3"
+                                       Margin="3.8,0"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Top"
+                                       Fill="{TemplateBinding BorderBrush}" />
+                            <Rectangle Height="3"
+                                       Margin="3.8,0"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Bottom"
+                                       Fill="{TemplateBinding BorderBrush}" />
+                            <Grid Margin="3">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <ContentControl Name="header"
+                                                Margin="4,0,4,4"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                Content="{TemplateBinding Header}"
+                                                ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                                FontWeight="Bold" />
+                                <StackPanel Name="panel"
+                                            Grid.Row="1"
+                                            Margin="0,0,0,4" />
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="DataPointInfoTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid>
+                            <!--
+                                <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{Binding Path=DisplayHeader}" FontSize="12" Margin="4,2,4,0"/>
+                            -->
+                            <TextBlock Margin="4,0,4,4" Text="{Binding Path=DisplayContent}" />
+                        </Grid>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="AxisStyle" TargetType="telerikChartView:Axis">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:Axis">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="LabelStyle">
+                <Setter.Value>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="4" />
+                        <Setter Property="Foreground" Value="{StaticResource AxisLabelForeground}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="MajorTickStyle">
+                <Setter.Value>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="Fill" Value="{StaticResource AxisStrokeBrush}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TitleTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="LineStroke" Value="{StaticResource AxisStrokeBrush}" />
+        </Style>
+        <Style BasedOn="{StaticResource AxisStyle}" TargetType="telerikChartView:Axis" />
+        <Style x:Key="LogarithmicAxisStyle" TargetType="telerikChartView:LogarithmicAxis">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:LogarithmicAxis">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="LabelStyle">
+                <Setter.Value>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="4" />
+                        <Setter Property="Foreground" Value="{StaticResource AxisLabelForeground}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="MajorTickStyle">
+                <Setter.Value>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="Fill" Value="{StaticResource AxisStrokeBrush}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TitleTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="LineStroke" Value="{StaticResource AxisStrokeBrush}" />
+            <Setter Property="RangeExtendDirection" Value="None" />
+        </Style>
+        <Style BasedOn="{StaticResource LogarithmicAxisStyle}" TargetType="telerikChartView:LogarithmicAxis" />
+        <Style x:Key="CategoricalRadialAxisStyle"
+               BasedOn="{StaticResource AxisStyle}"
+               TargetType="telerikChartView:CategoricalRadialAxis">
+            <Setter Property="LabelStyle">
+                <Setter.Value>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="14" />
+                        <Setter Property="Foreground" Value="{StaticResource AxisLabelForeground}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource CategoricalRadialAxisStyle}" TargetType="telerikChartView:CategoricalRadialAxis" />
+        <Style x:Key="NumericRadialAxisStyle"
+               BasedOn="{StaticResource AxisStyle}"
+               TargetType="telerikChartView:NumericRadialAxis">
+            <Setter Property="LabelStyle">
+                <Setter.Value>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="10" />
+                        <Setter Property="Foreground" Value="{StaticResource AxisLabelForeground}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource NumericRadialAxisStyle}" TargetType="telerikChartView:NumericRadialAxis" />
+        <!--  Categorical Series  -->
+        <Style x:Key="AreaSeriesStyle" TargetType="telerikChartView:AreaSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:AreaSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TrackBallTemplate" Value="{StaticResource TrackBallDataTemplate}" />
+            <Setter Property="Fill">
+                <Setter.Value>
+                    <SolidColorBrush Color="{StaticResource AccentColor}" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Stroke" Value="{StaticResource StrokeBrush}" />
+            <Setter Property="StrokeThickness" Value="{StaticResource AreaStrokeThickness}" />
+        </Style>
+        <Style BasedOn="{StaticResource AreaSeriesStyle}" TargetType="telerikChartView:AreaSeries" />
+        <Style x:Key="LineSeriesStyle" TargetType="telerikChartView:LineSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:LineSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TrackBallTemplate" Value="{StaticResource TrackBallDataTemplate}" />
+            <Setter Property="Stroke">
+                <Setter.Value>
+                    <SolidColorBrush Color="{StaticResource AccentColor}" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource LineSeriesStyle}" TargetType="telerikChartView:LineSeries" />
+        <Style x:Key="BarSeriesStyle" TargetType="telerikChartView:BarSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:BarSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TrackBallTemplate" Value="{StaticResource TrackBallDataTemplate}" />
+            <Setter Property="DefaultVisualStyle">
+                <Setter.Value>
+                    <Style TargetType="Border">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{StaticResource AccentColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="BorderBrush" Value="{StaticResource StrokeBrush}" />
+                        <Setter Property="BorderThickness" Value="{StaticResource BarSeriesStrokeThickness}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="CombineMode" Value="Cluster" />
+        </Style>
+        <Style BasedOn="{StaticResource BarSeriesStyle}" TargetType="telerikChartView:BarSeries" />
+        <Style x:Key="CandlestickSeriesStyle" TargetType="telerikChartView:CandlestickSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:CandlestickSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TrackBallTemplate" Value="{StaticResource TrackBallDataTemplate}" />
+            <Setter Property="DefaultVisualStyle">
+                <Setter.Value>
+                    <Style TargetType="telerikChartView:Candlestick">
+                        <Setter Property="MinHeight" Value="1" />
+                        <Setter Property="StrokeThickness" Value="{StaticResource FinancialSeriesStrokeThickness}" />
+                        <Setter Property="UpStroke" Value="{StaticResource FinancialSeriesUpStroke}" />
+                        <Setter Property="DownStroke" Value="{StaticResource FinancialSeriesDownStroke}" />
+                        <Setter Property="UpFill" Value="{StaticResource FinancialSeriesUpFill}" />
+                        <Setter Property="DownFill" Value="{StaticResource FinancialSeriesDownFill}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource CandlestickSeriesStyle}" TargetType="telerikChartView:CandlestickSeries" />
+        <Style x:Key="OhlcSeriesStyle" TargetType="telerikChartView:OhlcSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:OhlcSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TrackBallTemplate" Value="{StaticResource TrackBallDataTemplate}" />
+            <Setter Property="DefaultVisualStyle">
+                <Setter.Value>
+                    <Style TargetType="telerikChartView:OhlcStick">
+                        <Setter Property="MinHeight" Value="1" />
+                        <Setter Property="StrokeThickness" Value="{StaticResource FinancialSeriesStrokeThickness}" />
+                        <Setter Property="UpStroke" Value="{StaticResource FinancialSeriesDownStroke}" />
+                        <Setter Property="DownStroke" Value="{StaticResource FinancialSeriesDownStroke}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource OhlcSeriesStyle}" TargetType="telerikChartView:OhlcSeries" />
+        <!--  Scatter Series  -->
+        <Style x:Key="ScatterPointSeriesStyle" TargetType="telerikChartView:ScatterPointSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:ScatterPointSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TrackBallTemplate" Value="{StaticResource TrackBallDataTemplate}" />
+            <Setter Property="DefaultVisualStyle">
+                <Setter.Value>
+                    <Style TargetType="Path">
+                        <Setter Property="Fill">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{StaticResource AccentColor}" />
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource ScatterPointSeriesStyle}" TargetType="telerikChartView:ScatterPointSeries" />
+        <Style x:Key="ScatterLineSeriesStyle" TargetType="telerikChartView:ScatterLineSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:ScatterLineSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TrackBallTemplate" Value="{StaticResource TrackBallDataTemplate}" />
+            <Setter Property="Stroke">
+                <Setter.Value>
+                    <SolidColorBrush Color="{StaticResource AccentColor}" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource ScatterLineSeriesStyle}" TargetType="telerikChartView:ScatterLineSeries" />
+        <Style x:Key="ScatterAreaSeriesStyle" TargetType="telerikChartView:ScatterAreaSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:ScatterAreaSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TrackBallTemplate" Value="{StaticResource TrackBallDataTemplate}" />
+            <Setter Property="Fill">
+                <Setter.Value>
+                    <SolidColorBrush Color="{StaticResource AccentColor}" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Stroke" Value="{StaticResource StrokeBrush}" />
+            <Setter Property="StrokeThickness" Value="{StaticResource AreaStrokeThickness}" />
+        </Style>
+        <Style BasedOn="{StaticResource ScatterAreaSeriesStyle}" TargetType="telerikChartView:ScatterAreaSeries" />
+        <!--  Polar Series  -->
+        <Style x:Key="PolarPointSeriesStyle" TargetType="telerikChartView:PolarPointSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:PolarPointSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="DefaultVisualStyle">
+                <Setter.Value>
+                    <Style TargetType="Path">
+                        <Setter Property="Fill">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{StaticResource AccentColor}" />
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource PolarPointSeriesStyle}" TargetType="telerikChartView:PolarPointSeries" />
+        <Style x:Key="PolarLineSeriesStyle" TargetType="telerikChartView:PolarLineSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:PolarLineSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Stroke">
+                <Setter.Value>
+                    <SolidColorBrush Color="{StaticResource AccentColor}" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource PolarLineSeriesStyle}" TargetType="telerikChartView:PolarLineSeries" />
+        <Style x:Key="PolarAreaSeriesStyle" TargetType="telerikChartView:PolarAreaSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:PolarAreaSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Fill">
+                <Setter.Value>
+                    <SolidColorBrush Opacity="0.5" Color="{StaticResource AccentColor}" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Stroke">
+                <Setter.Value>
+                    <SolidColorBrush Color="{StaticResource AccentColor}" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource PolarAreaSeriesStyle}" TargetType="telerikChartView:PolarAreaSeries" />
+        <!--  Radar Series  -->
+        <Style x:Key="RadarPointSeriesStyle" TargetType="telerikChartView:RadarPointSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:RadarPointSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="DefaultVisualStyle">
+                <Setter.Value>
+                    <Style TargetType="Path">
+                        <Setter Property="Fill">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{StaticResource AccentColor}" />
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource RadarPointSeriesStyle}" TargetType="telerikChartView:RadarPointSeries" />
+        <Style x:Key="RadarLineSeriesStyle" TargetType="telerikChartView:RadarLineSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:RadarLineSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Stroke">
+                <Setter.Value>
+                    <SolidColorBrush Color="{StaticResource AccentColor}" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource RadarLineSeriesStyle}" TargetType="telerikChartView:RadarLineSeries" />
+        <Style x:Key="RadarAreaSeriesStyle" TargetType="telerikChartView:RadarAreaSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:RadarAreaSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Fill">
+                <Setter.Value>
+                    <SolidColorBrush Opacity="0.5" Color="{StaticResource AccentColor}" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Stroke">
+                <Setter.Value>
+                    <SolidColorBrush Color="{StaticResource AccentColor}" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource RadarAreaSeriesStyle}" TargetType="telerikChartView:RadarAreaSeries" />
+        <!--  Pie Series  -->
+        <Style x:Key="PieSeriesStyle" TargetType="telerikChartView:PieSeries">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:PieSeries">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ShowLabels" Value="True" />
+            <Setter Property="RadiusFactor" Value="0.85" />
+            <Setter Property="DefaultSliceStyle">
+                <Setter.Value>
+                    <Style TargetType="Path">
+                        <Setter Property="Stroke" Value="#FFFFFF" />
+                        <Setter Property="Fill">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{StaticResource AccentColor}" />
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource PieSeriesStyle}" TargetType="telerikChartView:PieSeries" />
+        <!--  Financial Indicators  -->
+        <Style TargetType="telerikChartView:LineIndicatorBase">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:LineIndicatorBase">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Stroke" Value="Red" />
+        </Style>
+        <Style TargetType="telerikChartView:BarIndicatorBase">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:BarIndicatorBase">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TrackBallTemplate" Value="{StaticResource TrackBallDataTemplate}" />
+            <Setter Property="DefaultVisualStyle">
+                <Setter.Value>
+                    <Style TargetType="Border">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{StaticResource AccentColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="BorderBrush" Value="{StaticResource StrokeBrush}" />
+                        <Setter Property="BorderThickness" Value="{StaticResource BarSeriesStrokeThickness}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--  Decorations(grids)  -->
+        <Style x:Key="PolarChartGridStyle" TargetType="telerikChartView:PolarChartGrid">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:PolarChartGrid">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="PolarLineStyle">
+                <Setter.Value>
+                    <Style TargetType="Line">
+                        <Setter Property="Stroke" Value="{StaticResource GridLineBrush}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RadialLineStyle">
+                <Setter.Value>
+                    <Style TargetType="Ellipse">
+                        <Setter Property="Stroke" Value="{StaticResource GridLineBrush}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource PolarChartGridStyle}" TargetType="telerikChartView:PolarChartGrid" />
+        <Style x:Key="CartesianChartGridStyle" TargetType="telerikChartView:CartesianChartGrid">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerikChartView:CartesianChartGrid">
+                        <Canvas x:Name="renderSurface"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="MajorXLineStyle">
+                <Setter.Value>
+                    <Style TargetType="Line">
+                        <Setter Property="Stroke" Value="{StaticResource GridLineBrush}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="MajorYLineStyle">
+                <Setter.Value>
+                    <Style TargetType="Line">
+                        <Setter Property="Stroke" Value="{StaticResource GridLineBrush}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource CartesianChartGridStyle}" TargetType="telerikChartView:CartesianChartGrid" />
+        <SolidColorBrush x:Key="ControlOuterBorder_Normal" Color="#FF848484" />
+        <LinearGradientBrush x:Key="ControlBackground_Normal" StartPoint="0.5,0" EndPoint="0.5,1">
+            <GradientStop Offset="0" Color="#FFFFFFFF" />
+            <GradientStop Offset="0.50" Color="#FFDCDCDC" />
+            <GradientStop Offset="0.50" Color="#FFADADAD" />
+            <GradientStop Offset="1" Color="#FFD4D4D4" />
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ControlForeground_Normal" Color="#FF000000" />
+        <CornerRadius x:Key="ControlOuterBorder_CornerRadius">1</CornerRadius>
+        <SolidColorBrush x:Key="ControlInnerBorder_Normal" Color="#FFFFFFFF" />
+        <SolidColorBrush x:Key="ControlOuterBorder_Focused" Color="#FFFFC92B" />
+        <SolidColorBrush x:Key="ControlBackground_Focused" Color="Transparent" />
+        <SolidColorBrush x:Key="ControlInnerBorder_Focused" Color="Transparent" />
+        <SolidColorBrush x:Key="ControlOuterBorder_MouseOver" Color="#FFFFC92B" />
+        <LinearGradientBrush x:Key="ControlBackground_MouseOver" StartPoint="0.5,0" EndPoint="0.5,1">
+            <GradientStop Offset="0" Color="#FFFFFBDA" />
+            <GradientStop Offset="0.50" Color="#FFFEEBAE" />
+            <GradientStop Offset="0.50" Color="#FFFFD25A" />
+            <GradientStop Offset="1" Color="#FFFFFBA3" />
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ControlInnerBorder_MouseOver" Color="#FFFFFFFF" />
+        <LinearGradientBrush x:Key="ControlOuterBorder_Pressed" StartPoint="0.5,0" EndPoint="0.5,1">
+            <GradientStop Color="#FF282828" />
+            <GradientStop Offset="1" Color="#FF5F5F5F" />
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="ControlBackground_Pressed" StartPoint="0.5,0" EndPoint="0.5,1">
+            <GradientStop Offset="0" Color="#FFFFDCAB" />
+            <GradientStop Offset="0.5" Color="#FFFFD18F" />
+            <GradientStop Offset="0.5" Color="#FFFE9227" />
+            <GradientStop Offset="0" Color="#FFFFBA74" />
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="ControlInnerBorder_Pressed" StartPoint="0.5,0" EndPoint="0.5,1">
+            <GradientStop Color="#FFB69A78" />
+            <GradientStop Offset="0.126" Color="#FFFFE17A" />
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ControlOuterBorder_Disabled" Color="#FF989898" />
+        <SolidColorBrush x:Key="ControlInnerBorder_Disabled" Color="Transparent" />
+        <SolidColorBrush x:Key="ControlBackground_Disabled" Color="#FFE0E0E0" />
+        <Style x:Key="RadButtonStyle1" TargetType="telerik:RadButton">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{StaticResource ControlOuterBorder_Normal}" />
+            <Setter Property="Background" Value="{StaticResource ControlBackground_Normal}" />
+            <Setter Property="Foreground" Value="{StaticResource ControlForeground_Normal}" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="3" />
+            <Setter Property="CornerRadius" Value="{StaticResource ControlOuterBorder_CornerRadius}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerik:RadButton">
+                        <Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="OuterBorder"
+                                                                           Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ControlOuterBorder_MouseOver}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="InnerBorder"
+                                                                           Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ControlBackground_MouseOver}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="InnerBorder"
+                                                                           Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ControlInnerBorder_MouseOver}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0"
+                                                             Storyboard.TargetName="CommonStatesWrapper"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0" />
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="OuterBorder"
+                                                                           Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ControlOuterBorder_Pressed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="InnerBorder"
+                                                                           Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ControlBackground_Pressed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="InnerBorder"
+                                                                           Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ControlInnerBorder_Pressed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="OuterBorder"
+                                                                           Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ControlOuterBorder_Disabled}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="InnerBorder"
+                                                                           Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource ControlInnerBorder_Disabled}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="InnerBorder"
+                                                                           Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource ControlBackground_Disabled}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimation Duration="0"
+                                                             Storyboard.TargetName="Content"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.5" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="BackgroundVisibility">
+                                    <VisualState x:Name="BackgroundHidden">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0"
+                                                             Storyboard.TargetName="OuterBorder"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="BackgroundVisible" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStatesGroup">
+                                    <VisualState x:Name="Unfocused">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FocusVisual" Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="00:00:00.150">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Visibility>Collapsed</Visibility>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="FocusVisual"
+                                                                           Storyboard.TargetProperty="Opacity">
+                                                <LinearDoubleKeyFrame KeyTime="00:00:00.150" Value="0" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Focused">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="FocusVisual"
+                                                                           Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Visibility>Visible</Visibility>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimation Duration="0"
+                                                             Storyboard.TargetName="FocusVisual"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="1" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border x:Name="OuterBorder"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding CornerRadius}">
+                                <Grid>
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="Transparent"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="{TemplateBinding InnerCornerRadius}" />
+                                    <Border x:Name="InnerBorder"
+                                            Background="Transparent"
+                                            BorderBrush="{StaticResource ControlInnerBorder_Normal}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="{TemplateBinding InnerCornerRadius}" />
+                                </Grid>
+                            </Border>
+                            <ContentPresenter x:Name="Content"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            <Border x:Name="CommonStatesWrapper">
+                                <Border x:Name="FocusVisual"
+                                        Background="{StaticResource ControlBackground_Focused}"
+                                        BorderBrush="{StaticResource ControlOuterBorder_Focused}"
+                                        BorderThickness="1"
+                                        CornerRadius="{TemplateBinding CornerRadius}"
+                                        Opacity="0"
+                                        Visibility="Collapsed">
+                                    <Border x:Name="FocusInnerVisual"
+                                            BorderBrush="{StaticResource ControlInnerBorder_Focused}"
+                                            BorderThickness="1"
+                                            CornerRadius="{TemplateBinding InnerCornerRadius}" />
+                                </Border>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+    </Application.Resources>
+</Application>

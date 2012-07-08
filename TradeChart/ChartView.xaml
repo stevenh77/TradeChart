@@ -1,0 +1,192 @@
+﻿<UserControl x:Class="TradeChart.ChartView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:chart="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Charting"
+             xmlns:charting="clr-namespace:Telerik.Windows.Controls.Charting;assembly=Telerik.Windows.Controls.Charting"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:telerikQuickStart="clr-namespace:Telerik.Windows.Controls.QuickStart;assembly=Telerik.Windows.Controls"
+             xmlns:TradeChart="clr-namespace:TradeChart">
+
+    <UserControl.Resources>
+
+        <SolidColorBrush x:Key="ChartBrush1" Color="#FF8EC441" />
+        <SolidColorBrush x:Key="ChartBrush2" Color="#FF1B9DDE" />
+        <SolidColorBrush x:Key="ChartBrush3" Color="#FFF59700" />
+        <SolidColorBrush x:Key="ChartBrush4" Color="#FFD4DF32" />
+
+        <SolidColorBrush x:Key="LegendItem2Background" Color="#FF25A0DA" />
+
+        <Style x:Key="CustomStyle" TargetType="charting:Bar">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="charting:Bar">
+                        <Canvas>
+                            <Canvas.RenderTransform>
+                                <ScaleTransform x:Name="PART_AnimationTransform" ScaleY="0" />
+                            </Canvas.RenderTransform>
+                            <Rectangle x:Name="PART_DefiningGeometry"
+                                       Width="{TemplateBinding ItemActualWidth}"
+                                       Height="{TemplateBinding ItemActualHeight}"
+                                       Fill="{StaticResource ChartBrush2}" />
+                        </Canvas>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustomLegendItem" TargetType="charting:ChartLegendItem">
+            <Setter Property="Padding" Value="5,0,5,0" />
+            <Setter Property="Margin" Value="0,3,0,2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="charting:ChartLegendItem">
+                        <Grid x:Name="PART_MainContainer"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Path x:Name="PART_LegendItemMarker"
+                                  Width="16"
+                                  Height="16"
+                                  Margin="{TemplateBinding Margin}"
+                                  Stretch="Fill"
+                                  StrokeThickness="{TemplateBinding MarkerStrokeThickness}"
+                                  Style="{TemplateBinding ItemStyle}">
+                                <Path.Data>
+                                    <PathGeometry x:Name="PART_ItemMarkerGeometry" />
+                                </Path.Data>
+                            </Path>
+
+                            <TextBlock x:Name="PART_TextBlock"
+                                       Grid.Column="1"
+                                       Margin="{TemplateBinding Margin}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       Padding="{TemplateBinding Padding}"
+                                       Text="{TemplateBinding Label}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="ChartLegendControlTemplate1" TargetType="charting:ChartLegend" />
+        <ItemsPanelTemplate x:Key="ItemsPanelTemplate1" />
+
+    </UserControl.Resources>
+
+    <UserControl.DataContext>
+        <TradeChart:TradeChartViewModel />
+    </UserControl.DataContext>
+
+    <telerikQuickStart:QuickStart.ExampleHeader>
+        <StackPanel Margin="8" Orientation="Horizontal">
+            <TextBlock Text="Population change " />
+            <TextBlock VerticalAlignment="Center"
+                       FontSize="20"
+                       Text="(average annual change, thousand)" />
+        </StackPanel>
+    </telerikQuickStart:QuickStart.ExampleHeader>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+
+        <chart:RadChart x:Name="RadChart1"
+                        Background="White"
+                        BorderThickness="0"
+                        FontFamily="/TradeChart;component/Fonts/Fonts.zip#Segoe UI"
+                        FontSize="10.667"
+                        Foreground="{StaticResource ListDisplayBrush}"
+                        ItemsSource="{Binding ChartData}">
+            <chart:RadChart.SeriesMappings>
+                <charting:SeriesMapping>
+                    <charting:SeriesMapping.SeriesDefinition>
+                        <charting:BarSeriesDefinition ItemLabelFormat="#Y{0.}"
+                                                      ItemStyle="{StaticResource CustomStyle}"
+                                                      ShowItemLabels="False">
+                            <charting:BarSeriesDefinition.LabelSettings>
+                                <charting:BarLabelSettings Distance="0" LabelDisplayMode="MidPoint" />
+                            </charting:BarSeriesDefinition.LabelSettings>
+                        </charting:BarSeriesDefinition>
+                    </charting:SeriesMapping.SeriesDefinition>
+
+                    <charting:ItemMapping DataPointMember="YValue" FieldName="SumOfBuys" />
+                    <charting:ItemMapping DataPointMember="XCategory" FieldName="DaysLeft" />
+                </charting:SeriesMapping>
+
+                <charting:SeriesMapping>
+                    <charting:SeriesMapping.SeriesDefinition>
+                        <charting:LineSeriesDefinition AxisName="CountOfTrades" ShowItemLabels="False">
+                            <charting:LineSeriesDefinition.Appearance>
+                                <charting:SeriesAppearanceSettings Stroke="{StaticResource ChartBrush3}">
+                                    <charting:SeriesAppearanceSettings.PointMark>
+                                        <charting:PointMarkAppearanceSettings Fill="White"
+                                                                              Shape="Circle"
+                                                                              Stroke="{StaticResource ChartBrush3}" />
+                                    </charting:SeriesAppearanceSettings.PointMark>
+                                </charting:SeriesAppearanceSettings>
+                            </charting:LineSeriesDefinition.Appearance>
+                        </charting:LineSeriesDefinition>
+                    </charting:SeriesMapping.SeriesDefinition>
+
+                    <charting:ItemMapping DataPointMember="YValue" FieldName="CountOfTrades" />
+                    <charting:ItemMapping DataPointMember="XCategory" FieldName="DaysLeft" />
+                </charting:SeriesMapping>
+
+            </chart:RadChart.SeriesMappings>
+
+            <chart:RadChart.DefaultView>
+                <charting:ChartDefaultView ChartLegendPosition="Bottom">
+                    <charting:ChartDefaultView.ChartArea>
+                        <charting:ChartArea>
+                            <charting:ChartArea.AxisX>
+                                <charting:AxisX IsZeroBased="True" MajorTicksVisibility="Collapsed" />
+                            </charting:ChartArea.AxisX>
+                            <charting:ChartArea.AxisY>
+                                <charting:AxisY AutoRange="True"
+                                                IsZeroBased="True"
+                                                MajorTicksVisibility="Collapsed"
+                                                MinorTicksVisibility="Collapsed" />
+                            </charting:ChartArea.AxisY>
+                            <charting:ChartArea.AdditionalYAxes>
+                                <charting:AxisY AutoRange="True"
+                                                AxisName="CountOfTrades"
+                                                IsZeroBased="True"
+                                                MajorTicksVisibility="Collapsed"
+                                                MinorTicksVisibility="Collapsed" />
+                            </charting:ChartArea.AdditionalYAxes>
+                        </charting:ChartArea>
+                    </charting:ChartDefaultView.ChartArea>
+                    <charting:ChartDefaultView.ChartLegend>
+                        <charting:ChartLegend Margin="30,0,0,0"
+                                              BorderThickness="0"
+                                              ItemsPanel="{StaticResource ItemsPanelTemplate1}"
+                                              Template="{StaticResource ChartLegendControlTemplate1}">
+                            <charting:ChartLegendItem Label="Days left (bottom)" Style="{StaticResource CustomLegendItem}">
+                                <telerik:ChartLegendItem.MarkerFill>
+                                    <SolidColorBrush />
+                                </telerik:ChartLegendItem.MarkerFill>
+                            </charting:ChartLegendItem>
+                            <charting:ChartLegendItem Label="Sum of buys (left hand side)"
+                                                      MarkerFill="{StaticResource ChartBrush2}"
+                                                      MarkerShape="Square"
+                                                      Style="{StaticResource CustomLegendItem}" />
+
+                            <charting:ChartLegendItem BorderBrush="Black"
+                                                      Label="Count of trades (right hand side)"
+                                                      MarkerFill="White"
+                                                      MarkerShape="Circle"
+                                                      MarkerStroke="{StaticResource ChartBrush3}"
+                                                      MarkerStrokeThickness="1"
+                                                      Style="{StaticResource CustomLegendItem}" />
+                        </charting:ChartLegend>
+                    </charting:ChartDefaultView.ChartLegend>
+                </charting:ChartDefaultView>
+            </chart:RadChart.DefaultView>
+        </chart:RadChart>
+    </Grid>
+</UserControl>
