@@ -6,10 +6,10 @@
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:telerikQuickStart="clr-namespace:Telerik.Windows.Controls.QuickStart;assembly=Telerik.Windows.Controls">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="GoBrush" Color="#FF8EC441" />
+        <SolidColorBrush x:Key="GoBrush" Color="#ffcae8a0" />
         <SolidColorBrush x:Key="HistoricBrush" Color="#FF1B9DDE" />
-        <SolidColorBrush x:Key="WarningBrush" Color="#FFF59700" />
-        <SolidColorBrush x:Key="ErrorBrush" Color="#fff38989" />
+        <SolidColorBrush x:Key="WarningBrush" Color="#ffffc261" />
+        <SolidColorBrush x:Key="ErrorBrush" Color="#fff34141" />
     </UserControl.Resources>
 
     <Grid>
@@ -74,74 +74,117 @@
                     <charting:ItemMapping DataPointMember="YValue" FieldName="Rate" />
                     <charting:ItemMapping DataPointMember="XCategory" FieldName="Age" />
                 </charting:SeriesMapping>
-<!--
-                <charting:SeriesMapping>
+                <!--
+                    <charting:SeriesMapping>
                     <charting:SeriesMapping.SeriesDefinition>
-                        <charting:LineSeriesDefinition ShowItemLabels="False" ShowPointMarks="False">
-                            <charting:LineSeriesDefinition.Appearance>
-                                <charting:SeriesAppearanceSettings Stroke="{StaticResource GoBrush}">
-                                    <charting:SeriesAppearanceSettings.PointMark>
-                                        <charting:PointMarkAppearanceSettings Stroke="{StaticResource GoBrush}" />
-                                    </charting:SeriesAppearanceSettings.PointMark>
-                                </charting:SeriesAppearanceSettings>
-                            </charting:LineSeriesDefinition.Appearance>
-                        </charting:LineSeriesDefinition>
+                    <charting:LineSeriesDefinition ShowItemLabels="False" ShowPointMarks="False">
+                    <charting:LineSeriesDefinition.Appearance>
+                    <charting:SeriesAppearanceSettings Stroke="{StaticResource GoBrush}">
+                    <charting:SeriesAppearanceSettings.PointMark>
+                    <charting:PointMarkAppearanceSettings Stroke="{StaticResource GoBrush}" />
+                    </charting:SeriesAppearanceSettings.PointMark>
+                    </charting:SeriesAppearanceSettings>
+                    </charting:LineSeriesDefinition.Appearance>
+                    </charting:LineSeriesDefinition>
                     </charting:SeriesMapping.SeriesDefinition>
                     <charting:ItemMapping DataPointMember="YValue" FieldName="Future" />
                     <charting:ItemMapping DataPointMember="XCategory" FieldName="Age" />
-                </charting:SeriesMapping>-->
-                
+                    </charting:SeriesMapping>
+                -->
+
                 <charting:SeriesMapping>
                     <charting:SeriesMapping.SeriesDefinition>
-                        <charting:LineSeriesDefinition ShowItemLabels="False" ShowPointMarks="False" EmptyPointBehavior="Gap">
-                            <charting:LineSeriesDefinition.Appearance>
-                                <charting:SeriesAppearanceSettings Stroke="{StaticResource WarningBrush}"/>
-                            </charting:LineSeriesDefinition.Appearance>
-                        </charting:LineSeriesDefinition>
+                        <charting:RangeSeriesDefinition EmptyPointBehavior="Gap"
+                                                        ShowItemLabels="False"
+                                                        ShowPointMarks="False">
+
+                            <charting:RangeSeriesDefinition.Appearance>
+                                <charting:SeriesAppearanceSettings Fill="{StaticResource WarningBrush}" Stroke="{StaticResource WarningBrush}" />
+                            </charting:RangeSeriesDefinition.Appearance>
+                        </charting:RangeSeriesDefinition>
+                    </charting:SeriesMapping.SeriesDefinition>
+                    <charting:ItemMapping DataPointMember="High" FieldName="UpperTop" />
+                    <charting:ItemMapping DataPointMember="Low" FieldName="UpperBottom" />
+                    <charting:ItemMapping DataPointMember="XCategory" FieldName="Age" />
+                </charting:SeriesMapping>
+
+                <charting:SeriesMapping>
+                    <charting:SeriesMapping.SeriesDefinition>
+                        <charting:RangeSeriesDefinition ShowItemLabels="False" ShowPointMarks="False">
+                            <charting:RangeSeriesDefinition.Appearance>
+                                <charting:SeriesAppearanceSettings Fill="{StaticResource GoBrush}" Stroke="{StaticResource GoBrush}" />
+                            </charting:RangeSeriesDefinition.Appearance>
+                        </charting:RangeSeriesDefinition>
+                    </charting:SeriesMapping.SeriesDefinition>
+                    <charting:ItemMapping DataPointMember="High" FieldName="UpperBottom" />
+                    <charting:ItemMapping DataPointMember="Low" FieldName="LowerTop" />
+                    <charting:ItemMapping DataPointMember="XCategory" FieldName="Age" />
+                </charting:SeriesMapping>
+
+                <charting:SeriesMapping>
+                    <charting:SeriesMapping.SeriesDefinition>
+                        <charting:RangeSeriesDefinition ShowItemLabels="False" ShowPointMarks="False">
+                            <charting:RangeSeriesDefinition.Appearance>
+                                <charting:SeriesAppearanceSettings Fill="{StaticResource WarningBrush}" Stroke="{StaticResource WarningBrush}" />
+                            </charting:RangeSeriesDefinition.Appearance>
+                        </charting:RangeSeriesDefinition>
+                    </charting:SeriesMapping.SeriesDefinition>
+                    <charting:ItemMapping DataPointMember="High" FieldName="LowerTop" />
+                    <charting:ItemMapping DataPointMember="Low" FieldName="LowerBottom" />
+                    <charting:ItemMapping DataPointMember="XCategory" FieldName="Age" />
+                </charting:SeriesMapping>
+
+                <!--
+                    <charting:SeriesMapping>
+                    <charting:SeriesMapping.SeriesDefinition>
+                    <charting:LineSeriesDefinition ShowItemLabels="False" ShowPointMarks="False" EmptyPointBehavior="Gap">
+                    <charting:LineSeriesDefinition.Appearance>
+                    <charting:SeriesAppearanceSettings Stroke="{StaticResource WarningBrush}"/>
+                    </charting:LineSeriesDefinition.Appearance>
+                    </charting:LineSeriesDefinition>
                     </charting:SeriesMapping.SeriesDefinition>
                     <charting:ItemMapping DataPointMember="YValue" FieldName="UpperTop" />
                     <charting:ItemMapping DataPointMember="XCategory" FieldName="Age" />
-                </charting:SeriesMapping>
-
-                <charting:SeriesMapping>
+                    </charting:SeriesMapping>
+                    
+                    <charting:SeriesMapping>
                     <charting:SeriesMapping.SeriesDefinition>
-                        <charting:LineSeriesDefinition ShowItemLabels="False" ShowPointMarks="False">
-                            <charting:LineSeriesDefinition.Appearance>
-                                <charting:SeriesAppearanceSettings Stroke="{StaticResource GoBrush}"/>
-                            </charting:LineSeriesDefinition.Appearance>
-                        </charting:LineSeriesDefinition>
+                    <charting:LineSeriesDefinition ShowItemLabels="False" ShowPointMarks="False">
+                    <charting:LineSeriesDefinition.Appearance>
+                    <charting:SeriesAppearanceSettings Stroke="{StaticResource GoBrush}"/>
+                    </charting:LineSeriesDefinition.Appearance>
+                    </charting:LineSeriesDefinition>
                     </charting:SeriesMapping.SeriesDefinition>
                     <charting:ItemMapping DataPointMember="YValue" FieldName="UpperBottom" />
                     <charting:ItemMapping DataPointMember="XCategory" FieldName="Age" />
-                </charting:SeriesMapping>
-
-                <charting:SeriesMapping>
+                    </charting:SeriesMapping>
+                    
+                    <charting:SeriesMapping>
                     <charting:SeriesMapping.SeriesDefinition>
-                        <charting:LineSeriesDefinition  ShowItemLabels="False" ShowPointMarks="False">
-                            <charting:LineSeriesDefinition.Appearance>
-                                <charting:SeriesAppearanceSettings Stroke="{StaticResource GoBrush}"/>
-                            </charting:LineSeriesDefinition.Appearance>
-                        </charting:LineSeriesDefinition>
+                    <charting:LineSeriesDefinition  ShowItemLabels="False" ShowPointMarks="False">
+                    <charting:LineSeriesDefinition.Appearance>
+                    <charting:SeriesAppearanceSettings Stroke="{StaticResource GoBrush}"/>
+                    </charting:LineSeriesDefinition.Appearance>
+                    </charting:LineSeriesDefinition>
                     </charting:SeriesMapping.SeriesDefinition>
-                    <charting:ItemMapping DataPointMember="YValue" FieldName="LowerTop"  />
+                    <charting:ItemMapping DataPointMember="High" FieldName="LowerTop"  />
                     <charting:ItemMapping DataPointMember="XCategory" FieldName="Age" />
-                </charting:SeriesMapping>
-
-                <charting:SeriesMapping>
+                    </charting:SeriesMapping>
+                    
+                    <charting:SeriesMapping>
                     <charting:SeriesMapping.SeriesDefinition>
-                        <charting:LineSeriesDefinition ShowItemLabels="False" ShowPointMarks="False">
-                            <charting:LineSeriesDefinition.Appearance>
-                                <charting:SeriesAppearanceSettings Stroke="{StaticResource WarningBrush}"/>
-                            </charting:LineSeriesDefinition.Appearance>
-                        </charting:LineSeriesDefinition>
+                    <charting:LineSeriesDefinition ShowItemLabels="False" ShowPointMarks="False">
+                    <charting:LineSeriesDefinition.Appearance>
+                    <charting:SeriesAppearanceSettings Stroke="{StaticResource WarningBrush}"/>
+                    </charting:LineSeriesDefinition.Appearance>
+                    </charting:LineSeriesDefinition>
                     </charting:SeriesMapping.SeriesDefinition>
                     <charting:ItemMapping DataPointMember="YValue" FieldName="LowerBottom" />
                     <charting:ItemMapping DataPointMember="XCategory" FieldName="Age" />
-                </charting:SeriesMapping>
-
+                    </charting:SeriesMapping>
+                -->
             </chart:RadChart.SeriesMappings>
-            
-            
+
             <chart:RadChart.DefaultView>
                 <charting:ChartDefaultView>
                     <charting:ChartDefaultView.ChartArea>
@@ -150,13 +193,28 @@
                                 <charting:AxisX Title="-3m                                                           -2m                                                           -1m                                                       Today                                                      1m                                                           2m                                                           3m"
                                                 AxisLabelsVisibility="Collapsed"
                                                 MajorTicksVisibility="Collapsed"
-                                                MinorTicksVisibility="Collapsed"/>
+                                                MinorTicksVisibility="Collapsed" />
                             </charting:ChartArea.AxisX>
                             <charting:ChartArea.AxisY>
-                                <charting:AxisY Title="Spot" AxisLabelsVisibility="Visible" MinValue="1.2" MaxValue="1.6"/>
+                                <charting:AxisY Title="Spot"
+                                                AutoRange="false"
+                                                MajorTicksVisibility="Visible"
+                                                MaxValue="1.475"
+                                                StripLinesVisibility="Visible"
+                                                Step="0.02"
+                                                 MajorGridLinesVisibility="Visible"
+                                                 
+                                                MinValue="1.220"/>
                             </charting:ChartArea.AxisY>
                         </charting:ChartArea>
+
                     </charting:ChartDefaultView.ChartArea>
+                    <telerik:ChartDefaultView.ChartLegend>
+                        <telerik:ChartLegend Visibility="Collapsed" />
+                    </telerik:ChartDefaultView.ChartLegend>
+                    <telerik:ChartDefaultView.ChartTitle>
+                        <telerik:ChartTitle Visibility="Collapsed" />
+                    </telerik:ChartDefaultView.ChartTitle>
                 </charting:ChartDefaultView>
             </chart:RadChart.DefaultView>
         </chart:RadChart>
