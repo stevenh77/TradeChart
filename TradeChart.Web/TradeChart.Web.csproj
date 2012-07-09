@@ -74,9 +74,21 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FutureService.ashx.cs">
+      <DependentUpon>FutureService.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="HistoryService.ashx.cs">
+      <DependentUpon>HistoryService.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="FutureService.ashx" />
+    <None Include="data.csv" />
+    <None Include="future.json" />
+    <None Include="historic.json" />
+    <Content Include="HistoryService.ashx" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -89,7 +101,7 @@
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
+          <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>3256</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>

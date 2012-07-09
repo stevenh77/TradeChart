@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using TradeChart.Views;
+using TradeChart.WorkingChart;
 
 namespace TradeChart
 {
@@ -18,7 +19,7 @@ namespace TradeChart
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            this.RootVisual = new MainPage();
+            this.RootVisual = new FxChart();
         }
 
         private void Application_Exit(object sender, EventArgs e)

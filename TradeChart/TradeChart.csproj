@@ -78,6 +78,9 @@
       <HintPath>..\Libs\Prism\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
+    <Reference Include="System.Json, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -123,6 +126,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WorkingChart\FxChart.xaml.cs">
+      <DependentUpon>FxChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkingChart\Price.cs" />
     <Compile Include="Models\ChartItem.cs" />
     <Compile Include="Models\ChartItems.cs" />
     <Compile Include="Models\Trades.cs" />
@@ -147,6 +154,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="WorkingChart\FxChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ChartView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
