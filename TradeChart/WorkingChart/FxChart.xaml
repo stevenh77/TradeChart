@@ -188,7 +188,7 @@
             <chart:RadChart.DefaultView>
                 <charting:ChartDefaultView>
                     <charting:ChartDefaultView.ChartArea>
-                        <charting:ChartArea>
+                        <charting:ChartArea NoDataString="Loading FX data from historic, future, calculation and coupon services...">
                             <charting:ChartArea.AxisX>
                                 <charting:AxisX Title="-3m                                                           -2m                                                           -1m                                                       Today                                                      1m                                                           2m                                                           3m"
                                                 AxisLabelsVisibility="Collapsed"
